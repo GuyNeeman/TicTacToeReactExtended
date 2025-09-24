@@ -4,8 +4,6 @@ import React, { useState, useEffect } from "react";
 import Cards from "./Cards/Cards.jsx";
 import IntroScreen from "./Comp/IntroScreen.jsx";
 
-// --- The New Card Deck ---
-// Storing cards as objects makes them much easier to manage.
 const cardDeck = [
     {
         id: 1,
@@ -65,10 +63,10 @@ const cardDeck = [
             if (emptySquares.length > 0) {
                 const randomIndex = emptySquares[Math.floor(Math.random() * emptySquares.length)];
                 const nextSquares = squares.slice();
-                nextSquares[randomIndex] = 'B'; // 'B' for Blocker
+                nextSquares[randomIndex] = 'B';
                 return nextSquares;
             }
-            return squares; // No change if no empty squares
+            return squares;
         },
     },
     {
@@ -119,7 +117,6 @@ function App() {
             for (let start = 0; start <= line.length - winLength; start++) {
                 const segment = line.slice(start, start + winLength);
                 const first = sq[segment[0]];
-                // Make sure the winner is 'X' or 'O', not a blocker
                 if (first && (first === 'X' || first === 'O') && segment.every(idx => sq[idx] === first)) {
                     return first;
                 }
@@ -129,7 +126,6 @@ function App() {
     }
 
     function handleSquareClick(i) {
-        // A player cannot place a mark if a card is selected
         if (squares[i] || winner || selectedCard) return;
 
         const nextSquares = squares.slice();
@@ -137,7 +133,6 @@ function App() {
         updateGameState(nextSquares);
     }
 
-    // A player draws a new card, which ends their turn.
     function handleDrawCard() {
         if (winner) return;
 
@@ -146,11 +141,9 @@ function App() {
             [turn]: [...prevHands[turn], getRandomCard()],
         }));
 
-        // Drawing a card costs a turn
         setTurn(turn === "X" ? "O" : "X");
     }
 
-    // A player selects a card from their hand to preview it
     function handleSelectCard(card) {
         if (winner) return;
         setSelectedCard(card);
@@ -159,10 +152,8 @@ function App() {
     function handleApplyCard() {
         if (!selectedCard) return;
 
-        // Apply the card's effect function
         const nextSquares = selectedCard.effect(squares, size);
 
-        // Remove the card from the player's hand
         setPlayerHands(prev => ({
             ...prev,
             [turn]: prev[turn].filter(card => card.id !== selectedCard.id)
@@ -170,15 +161,13 @@ function App() {
 
         setSelectedCard(null);
 
-        // The "Double Turn" card has a special property to skip ending the turn
         if (selectedCard.endsTurn === false) {
-            updateGameState(nextSquares, false); // false = don't switch turn
+            updateGameState(nextSquares, false);
         } else {
-            updateGameState(nextSquares); // switch turn by default
+            updateGameState(nextSquares);
         }
     }
 
-    // Central function to update board state and check for winner
     function updateGameState(nextSquares, switchTurn = true) {
         setSquares(nextSquares);
         const newWinner = calculateWinner(nextSquares);

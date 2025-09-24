@@ -8,7 +8,10 @@ export default function IntroScreen({ setGameon }) {
             <p>On your turn, you can either place a piece on the board or use/draw a card.</p>
             <p>The cards hold special powers. You'll have to discover them yourself!</p>
             <p>Good luck!</p>
-            
+
+            <p>-</p>
+            <p>Made by Guy Neeman</p>
+
             <button onClick={() => setGameon(true)}>Start Game</button>
         </div>
     );
