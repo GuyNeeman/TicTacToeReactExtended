@@ -6,7 +6,6 @@ export default function Cards({ hand, turn, winner, selectedCard, onDraw, onSele
         <div className="cards-container">
             <h2>Player {turn}'s Turn</h2>
 
-            {/* Show the selected card's details and actions */}
             {selectedCard ? (
                 <div className="card-display">
                     <h3>{selectedCard.name}</h3>
@@ -20,7 +19,6 @@ export default function Cards({ hand, turn, winner, selectedCard, onDraw, onSele
                 </div>
             ) : (
                 <>
-                    {/* Show the draw button and the player's hand */}
                     <div className="card-action">
                         <p>Choose an action:</p>
                         <button onClick={onDraw} disabled={!!winner}>
